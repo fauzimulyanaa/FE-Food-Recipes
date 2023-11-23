@@ -1,0 +1,186 @@
+.form-section {
+  height: 100vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f9f9f9;
+}
+
+.wrapper-register {
+  padding-top: 35px;
+  /* background-color: #fff;
+  border-radius: 30px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); */
+}
+
+.wrapper-img-formregister img {
+  width: 100%;
+}
+
+.wrapper-form h3 {
+  color: #efc81a;
+}
+.wrapper-form p {
+  color: #8692a6;
+}
+
+.wrapper-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+}
+
+.form-input {
+  width: 350px;
+}
+
+#username,
+#email,
+#password,
+#confpassword {
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  outline: none;
+}
+
+#password:focus {
+  border: 1px solid #efc81a;
+}
+
+#email:focus {
+  border: 1px solid #efc81a;
+}
+
+#username:focus {
+  border: 1px solid #efc81a;
+}
+#confpassword:focus {
+  border: 1px solid #efc81a;
+}
+
+.form-btn {
+  width: 350px;
+}
+
+.signup {
+  margin-top: 10px;
+  text-align: center;
+  padding-bottom: 9px;
+}
+
+.signup a {
+  color: #efc81a;
+  text-decoration: none;
+}
+
+.my-lable {
+  padding-bottom: 4px;
+}
+
+.my-btn {
+  background-color: #efc81a;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+/* CSS untuk Modal */
+.modal-dialog {
+  max-width: 400px;
+  margin: 30vh auto; /* Posisikan di tengah vertikal */
+}
+
+.modal-content {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.modal-header {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-title {
+  margin: 0;
+}
+
+.close {
+  color: red;
+  cursor: pointer;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.modal-footer {
+  border-top: 1px solid #ddd;
+  padding: 10px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.form-btn {
+  margin-left: 8px;
+  background-color: #007bff;
+  width: 1000px;
+  border: none;
+  padding: 9px;
+  border-radius: 9px;
+  color: #fff;
+}
+
+/* CSS untuk link dalam button */
+.signup-link {
+  color: #fff;
+  text-decoration: none;
+}
+.signup-link:hover {
+  text-decoration: underline;
+}
+
+/* break point */
+
+@media (max-width: 576px) {
+  section {
+    background-color: #fff;
+  }
+  .wrapper {
+    margin: 0;
+    background-color: #fff;
+    box-shadow: none;
+  }
+  .wrapper-img-formregister {
+    display: none;
+  }
+  .wrapper-form {
+    width: 100%;
+  }
+
+  .wrapper-form h3 {
+    text-align: center;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 992px) {
+  .wrapper {
+    margin: 0;
+    background-color: #fff;
+    box-shadow: none;
+  }
+  .wrapper-img {
+    display: none;
+  }
+
+  .wrapper-form {
+    width: 100%;
+  }
+}

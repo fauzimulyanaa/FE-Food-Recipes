@@ -1,0 +1,9 @@
+.detailpage-profile {
+  margin: 90px auto;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  width: 80%;
+}

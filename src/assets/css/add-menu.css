@@ -1,0 +1,70 @@
+.add-file {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.add-photo {
+  margin-bottom: 20px;
+}
+
+.input-group {
+  margin-bottom: 15px;
+}
+
+.form-control[type="file"] {
+  display: none;
+}
+
+.input-group-text[for="inputGroupFile02"] {
+  cursor: pointer;
+  background-color: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}
+
+.input-group-text[for="inputGroupFile02"]:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+/* Style for Title, Description, Instructions, Ingredients */
+.title-form,
+.Description-form,
+.instructions-form,
+.ingredients-form {
+  margin-bottom: 20px;
+}
+
+/* Style for Textarea */
+.form-control[aria-label="With textarea"] {
+  resize: none;
+}
+
+/* Style for Category Form */
+.category-form {
+  margin-bottom: 20px;
+}
+
+.form-select {
+  cursor: pointer;
+}
+
+/* Style for Submit Button */
+.btn-submit {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 1rem;
+  text-align: center;
+  text-decoration: none;
+  background-color: #007bff;
+  color: #fff;
+  border: 1px solid #007bff;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.btn-submit:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
