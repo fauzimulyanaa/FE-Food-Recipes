@@ -27,11 +27,11 @@ const EditRecipe = () => {
   });
 
   const navigate = useNavigate();
-  const { recipeId } = useParams();
+  const { id } = useParams();
 
   useEffect(() => {
     axios
-      .get(`/recipe/${recipeId}`, {
+      .get(`/recipe/${id}`, {
         headers: {
           token: `${localStorage.getItem("token")}`,
         },
@@ -40,7 +40,7 @@ const EditRecipe = () => {
         setData(res.data.data);
       })
       .catch((err) => console.log(err));
-  }, [recipeId]);
+  }, [id]);
 
   useEffect(() => {
     dispatch(getCategory());
