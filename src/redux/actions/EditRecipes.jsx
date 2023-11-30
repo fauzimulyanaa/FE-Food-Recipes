@@ -2,10 +2,10 @@
 import axios from "../../axiosConfig";
 import Swal from "sweetalert2";
 
-export const updateRecipe = (recipeId, formData, navigate) => async (dispatch) => {
+export const updateRecipe = (id, formData, navigate) => async (dispatch) => {
   try {
     dispatch({ type: "UPDATE_RECIPE_PENDING" });
-    const result = await axios.patch(`/recipe/update-recipe/${recipeId}`, formData, {
+    const result = await axios.patch(`/recipe/update-recipe/${id}`, formData, {
       headers: {
         token: `${localStorage.getItem("token")}`,
         "Content-Type": "multipart/form-data",
