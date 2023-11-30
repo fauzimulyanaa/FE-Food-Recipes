@@ -38,6 +38,16 @@
   transform: translateY(-50%);
 }
 
+.btn-search {
+  background-color: #efc81a;
+  border: none;
+  margin-left: 10px;
+  width: 100px;
+  height: 60px;
+  color: #fff;
+  border-radius: 10px;
+}
+
 /* hero section */
 
 .wrapper-img {

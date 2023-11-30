@@ -4,28 +4,23 @@ import React from "react";
 import "../../assets/css/detail-menu.css";
 import Profile from "../../assets/img/profile.svg";
 import DetailImage from "../../assets/img/edit-hero.png";
-import axiosInstance from "../../axiosConfig";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Comment from "./comment-section";
+import { useDispatch, useSelector } from "react-redux";
+import { getDetailMenu } from "../../redux/actions/GetDetailRecipes";
+import Loading from "../loading";
 
 export default function DetailMenuPage() {
-  const [detailMenu, setDetailMenu] = useState(null);
+  // const [detailMenu, setDetailMenu] = useState(null);
   const { id } = useParams();
+  const dispatch = useDispatch();
+  const isLoading = useSelector((state) => state.detailMenu.isLoading);
+  const detailMenu = useSelector((state) => state.detailMenu.data);
 
   useEffect(() => {
-    const fetchDetailMenu = async () => {
-      try {
-        const response = await axiosInstance.get(`/recipe/${id}`);
-        setDetailMenu(response.data.data);
-        console.log(response.data.data);
-      } catch (error) {
-        console.error("Error fetching detail menu:", error);
-      }
-    };
-
-    fetchDetailMenu();
-  }, [id]);
+    dispatch(getDetailMenu(id));
+  }, [dispatch, id]);
 
   return (
     <>
@@ -34,7 +29,7 @@ export default function DetailMenuPage() {
           <div className="profile-detail">
             <img src={Profile} alt="profile picture" />
             <div className="desc-hero">
-              <p className="name">Ayudia</p>
+              <p className="name">{detailMenu.author}</p>
               <p className="recipes Bold">10 Recipes</p>
             </div>
           </div>
@@ -44,6 +39,7 @@ export default function DetailMenuPage() {
           </div>
         </div>
         <div className="hero-imagedetail">
+          <Loading isLoading={isLoading} />
           {detailMenu && (
             <>
               <h1>{detailMenu.title}</h1>

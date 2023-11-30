@@ -3,50 +3,50 @@ import CoverImage from "../assets/img/l.png";
 import "../assets/css/formregister.css";
 import React from "react";
 import { Link } from "react-router-dom";
-import axios from "../axiosConfig";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { register } from "../redux/actions/AuthRegister";
+import Swal from "sweetalert2";
+import Loading from "./loading";
 
 export default function Form() {
+  const dispatch = useDispatch();
+  const isLoading = useSelector((state) => state.authRegister.isLoading);
+
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confpassword, setConfPassword] = useState("");
-  const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
       if (password !== confpassword) {
-        console.error("Password and confirm password do not match.");
+        Swal.fire({
+          icon: "error",
+          title: "Password Mismatch",
+          text: "Password and confirm password do not match.",
+        });
         return;
       }
-      const response = await axios.post("/auth/register", {
-        username,
-        email,
-        password,
-        confPassword: confpassword,
+      dispatch(
+        register({
+          username,
+          email,
+          password,
+          confPassword: confpassword,
+        })
+      );
+      Swal.fire({
+        icon: "success",
+        title: "Registration Successful",
+        text: "Welcome, Please Login!",
       });
-
-      setRegistrationSuccess(true);
-      console.log("Response:", response.data);
     } catch (error) {
       console.error("Error during registration:", error);
-      if (error.response) {
-        // Kesalahan respons dari server
-        console.error("Response Error:", error.response.data);
-        console.error("Status Code:", error.response.status);
-      } else if (error.request) {
-        // Tidak ada respons dari server
-        console.error("No Response Received");
-      } else {
-        // Kesalahan lainnya
-        console.error("Error:", error.message);
-      }
     }
   };
-  const closeModal = () => {
-    setRegistrationSuccess(false);
-  };
+
   return (
     <section className="container-fluid form-section">
       <div className="wrapper-register d-flex container-md">
@@ -98,31 +98,6 @@ export default function Form() {
               </Link>
             </p>
           </form>
-          <div className={`modal fade ${registrationSuccess ? "show" : ""}`} style={{ display: registrationSuccess ? "block" : "none" }} tabIndex="-1" role="dialog">
-            <div className="modal-dialog" role="document">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5 className="modal-title">Register Success</h5>
-                  <button type="button" className="close" onClick={closeModal} aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div className="modal-body">
-                  <p>Please log in to continue.</p>
-                </div>
-                <div className="modal-footer d-flex">
-                  <button type="button" className="form-btn " onClick={closeModal}>
-                    Close
-                  </button>
-                  <button type="button" className="form-btn ">
-                    <Link to="/login" className="signup-link">
-                      Log in Here
-                    </Link>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>

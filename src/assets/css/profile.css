@@ -47,10 +47,12 @@
   margin-bottom: 5px;
 }
 
-.logout {
+.btn-logout {
   font-weight: bold;
   font-size: 17px;
   color: red;
+  background-color: #fff;
+  border: none;
 }
 
 .btn-edit {

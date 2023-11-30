@@ -10,6 +10,8 @@ import DetailMenu from "./pages/detailMenu";
 import AddMenu from "./pages/addMenu";
 import ProfilePage from "./pages/profilePage";
 import EditRecipe from "./pages/editrecipe";
+import EditProfile from "./pages/EditProfile";
+import Auth from "./components/authMiddleware";
 
 const App = () => {
   return (
@@ -18,11 +20,19 @@ const App = () => {
         <Route path="/login" element={<LoginForm />} />
         <Route path="/signup" element={<SignUpForm />} />
         <Route path="/" element={<Home />} />
-        <Route path="/search-menu" element={<Search />} />
+        <Route
+          path="/search-menu"
+          element={
+            <Auth>
+              <Search />
+            </Auth>
+          }
+        />
         <Route path="/detail-menu/:id" element={<DetailMenu />} />
         <Route path="/add-menu" element={<AddMenu />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/edit-recipe/:recipeId" element={<EditRecipe />} />
+        <Route path="/edit-profile/:userId" element={<EditProfile />} />
       </Routes>
     </Router>
   );

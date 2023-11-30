@@ -1,0 +1,11 @@
+.wrapper-edit-form {
+  width: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 90px auto;
+}
+
+.edit-btn {
+  width: 350px;
+}

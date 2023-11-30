@@ -6,34 +6,29 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import axios from "../axiosConfig";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../redux/actions/AuthLogin";
+import Swal from "sweetalert2";
 
 export default function Form() {
+  const dispatch = useDispatch();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [data, setData] = useState();
   const navigate = useNavigate();
-
   const handleLogin = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post("/auth/login", {
-        email,
-        password,
-      });
-      localStorage.setItem("name", response.data.data.username);
-      localStorage.setItem("token", response.data.data.token);
-      localStorage.setItem("uuid", response.data.data.uuid);
-      setData(response.data.data);
-      setErrorMessage("");
-      console.log("Response:", response.data);
-      navigate("/");
-    } catch (error) {
-      console.error("Error during login:", error);
+    Swal.fire({
+      title: "Login",
+      html: "Please wait...",
+      allowOutsideClick: false,
+      showConfirmButton: false,
+      onBeforeOpen: () => {
+        Swal.showLoading();
+      },
+    });
 
-      setErrorMessage("Invalid email or password. Please try again.");
-    }
+    dispatch(login({ email, password }, navigate));
   };
 
   return (
@@ -67,7 +62,6 @@ export default function Form() {
             <button type="submit" className="login-btn btn btn-warning text-white">
               Submit
             </button>
-            {errorMessage && <p className="text-danger">{errorMessage}</p>}
             <br />
             <p className="signup">
               Don’t have an account?

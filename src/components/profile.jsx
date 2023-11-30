@@ -5,63 +5,59 @@ import NavbarProfile from "../components/navbarwithprofile";
 import CardImage from "../components/elements/card-image";
 import CardTitle from "../components/elements/card-title";
 import Profile from "../assets/img/profile.svg";
-import axios from "../axiosConfig";
 import "../assets/css/profile-page.css";
+import Swal from "sweetalert2";
+import { getUserRecipes } from "../redux/actions/GetUserRecipes";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteRecipe } from "../redux/actions/DeleteRecipes";
+import Loding from "../components/loading";
 
 const ProfilePage = () => {
-  const [userRecipes, setUserRecipes] = useState([]);
-  const userId = localStorage.getItem("uuid");
+  const dispatch = useDispatch();
+  const userRecipes = useSelector((state) => state.userRecipes.data || []);
+  const isLoading = useSelector((state) => state.userRecipes.isLoading);
 
   useEffect(() => {
-    const fetchUserRecipes = async () => {
-      try {
-        if (userId) {
-          const response = await axios.get("/recipe/my-recipe");
-          setUserRecipes(response.data.data);
-        }
-      } catch (error) {
-        console.error("Error fetching user recipes:", error);
-      }
-    };
-
-    fetchUserRecipes();
-  }, [userId]);
+    dispatch(getUserRecipes());
+  }, [dispatch]);
 
   const confirmDelete = async (recipeId) => {
-    const isConfirmed = window.confirm("Are you sure you want to delete this recipe?");
-    if (isConfirmed) {
-      try {
-        await axios.delete(`/recipe/delete-recipe/${recipeId}`, {
-          headers: {
-            token: `${localStorage.getItem("token")}`,
-          },
-        });
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    });
 
-        // Remove the deleted recipe from the state
-        setUserRecipes((prevRecipes) => prevRecipes.filter((recipe) => recipe.id !== recipeId));
-        console.log("Recipe deleted successfully!");
-      } catch (error) {
-        console.error("Error deleting recipe:", error);
-      }
+    if (result.isConfirmed) {
+      dispatch(deleteRecipe(recipeId));
     }
   };
 
   const handleEdit = (recipeId) => {
     history.push(`/edit-recipe/${recipeId}`);
   };
-
+  const profilePictureUrl = localStorage.getItem("photo_user");
+  const defaultProfilePictureUrl = Profile;
+  const imageUrl = profilePictureUrl ? profilePictureUrl : defaultProfilePictureUrl;
   return (
     <>
       <div className="container-fluid">
         <NavbarProfile nav1="Home" nav2="Add Recipes " nav3="Search Menu" link1="/" link2="/add-menu" link3="/search-menu" />
         <div className="detailpage-profile">
           <div className="profile-detail">
-            <img src={Profile} alt="profile picture" />
+            <img src={imageUrl} alt="profile picture" />
             <div className="desc-hero">
-              <p className="name">{`${localStorage.getItem("name")}`}</p>
+              <Link to={`/edit-profile/${localStorage.getItem("uuid")}`} style={{ textDecoration: "none", color: "#000" }}>
+                <p className="name">{`${localStorage.getItem("name")}`}</p>
+              </Link>
               <p className="recipes Bold">{userRecipes.length} Recipes</p>
             </div>
           </div>
+
           <div className="hero-date">
             <p>21 February 2023</p>
             <p>20 Likes - 2 Comments</p>
@@ -69,6 +65,7 @@ const ProfilePage = () => {
         </div>
         <section className="section-search">
           <div className="wrapper-searchpage">
+            <Loding isLoading={isLoading} />
             {userRecipes.map((recipe) => (
               <div key={recipe.id} className="search-card mb-3" style={{ maxWidth: "990px" }}>
                 <CardImage CardImage={recipe.photo_recipes} />

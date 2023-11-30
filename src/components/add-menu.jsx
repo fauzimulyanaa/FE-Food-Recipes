@@ -3,10 +3,15 @@ import React from "react";
 import "../assets/css/add-menu.css";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import axios from "axios";
-const base_URL = import.meta.env.VITE_BASE_URL;
+import { useDispatch, useSelector } from "react-redux";
+import { addMenu } from "../redux/actions/AddRecipes";
+import Loading from "./loading";
+import Swal from "sweetalert2";
 
 export default function AddMenu() {
+  const dispatch = useDispatch();
+  const AddRecipes = useSelector((state) => state.addRecipes);
+  const isLoading = useSelector((state) => state.isLoading);
   const navigate = useNavigate();
   const [photo, setPhoto] = useState();
   const [inputData, setInputData] = useState({
@@ -20,6 +25,15 @@ export default function AddMenu() {
 
   const handleAddMenu = async (e) => {
     e.preventDefault();
+    Swal.fire({
+      title: "Posting Recipes",
+      html: "Please wait...",
+      allowOutsideClick: false,
+      showConfirmButton: false,
+      onBeforeOpen: () => {
+        Swal.showLoading();
+      },
+    });
 
     let bodyData = new FormData();
     bodyData.append("title", inputData.title);
@@ -29,22 +43,7 @@ export default function AddMenu() {
     bodyData.append("category_id", inputData.category_id);
     bodyData.append("photo_recipes", photo);
 
-    axios
-      .post(base_URL + "/recipe/create", bodyData, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res) => {
-        console.log("success input data");
-        console.log(res);
-        navigate("/profile");
-      })
-      .catch((err) => {
-        console.log("failed input data hahahhah");
-        console.log(err);
-      });
+    dispatch(addMenu(bodyData, navigate));
   };
 
   const onChange = (e) => {

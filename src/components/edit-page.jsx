@@ -4,8 +4,16 @@ import React, { useState, useEffect } from "react";
 import axios from "../axiosConfig";
 import { useParams, useNavigate } from "react-router-dom";
 import "../assets/css/edit-menu.css";
+import { useDispatch, useSelector } from "react-redux";
+import { updateRecipe } from "../redux/actions/EditRecipes";
+import { getCategory } from "../redux/actions/GetCategory";
+import Swal from "sweetalert2";
 
 const EditRecipe = () => {
+  const dispatch = useDispatch();
+  const editRecipe = useSelector((state) => state.editRecipe.data);
+  const categoryState = useSelector((state) => state.categories);
+
   const [data, setData] = useState([]);
   const [photo, setPhoto] = useState();
   const [category_id, setCategory] = useState({});
@@ -17,6 +25,7 @@ const EditRecipe = () => {
     category_id: "",
     photo_recipes: "",
   });
+
   const navigate = useNavigate();
   const { recipeId } = useParams();
 
@@ -34,21 +43,8 @@ const EditRecipe = () => {
   }, [recipeId]);
 
   useEffect(() => {
-    axios
-      .get("/category", {
-        headers: {
-          token: `${localStorage.getItem("token")}`,
-        },
-      })
-      .then((res) => {
-        setCategory(res.data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  useEffect(() => {
-    console.log("Category ", category_id);
-  }, [category_id]);
+    dispatch(getCategory());
+  }, [dispatch]);
 
   useEffect(() => {
     if (data) {
@@ -72,25 +68,20 @@ const EditRecipe = () => {
     bodyData.append("ingredients", form.ingredients);
     bodyData.append("category_id", form.category_id);
 
-    axios
-      .patch(`/recipe/update-recipe/${recipeId}`, bodyData, {
-        headers: {
-          token: `${localStorage.getItem("token")}`,
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res) => {
-        alert("Success: Data has been updated successfully!");
-        console.log(res);
-        navigate("/profile");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    dispatch(updateRecipe(recipeId, bodyData, navigate));
   };
 
   const handleUpdate = (event) => {
     event.preventDefault();
+    Swal.fire({
+      title: "Update Recipes",
+      html: "Please wait...",
+      allowOutsideClick: false,
+      showConfirmButton: false,
+      onBeforeOpen: () => {
+        Swal.showLoading();
+      },
+    });
     putData();
   };
 
@@ -106,6 +97,7 @@ const EditRecipe = () => {
     setPhoto(e.target.files[0]);
     e.target.files[0] && setForm({ ...form, photo: URL.createObjectURL(e.target.files[0]) });
   };
+
   return (
     <div className="edit-container">
       <h2 className="edit-tagline">Edit Recipe</h2>
@@ -146,7 +138,6 @@ const EditRecipe = () => {
 
         <label>Category:</label>
         <select name="category_id" value={form.category_id} onChange={onChange}>
-          {/* Pilihan kategori, sesuaikan dengan data kategori yang tersedia */}
           <option value="1">Main Course</option>
           <option value="2">Appetizer</option>
           <option value="3">Dessert</option>
