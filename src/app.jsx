@@ -31,7 +31,7 @@ const App = () => {
         <Route path="/detail-menu/:id" element={<DetailMenu />} />
         <Route path="/add-menu" element={<AddMenu />} />
         <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/edit-recipe/:recipeId" element={<EditRecipe />} />
+        <Route path="/edit-recipe/:id" element={<EditRecipe />} />
         <Route path="/edit-profile/:userId" element={<EditProfile />} />
       </Routes>
     </Router>
